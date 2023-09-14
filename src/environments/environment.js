@@ -1,7 +1,7 @@
  const dataStrings ={
-  serverUrl: "http://localhost:3002",
-  apiSqlUser:"/api/sqlUser/",
-  apiOracleUser:"/api/oracleUser/",
+  serverUrl: "https://localhost:7255",
+  apiSqlUser:"/api/SqlUser/",
+  apiMongoDb:"/api/MongoUser/",
 };
 
 export default dataStrings

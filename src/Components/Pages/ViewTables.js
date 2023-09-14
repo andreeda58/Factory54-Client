@@ -1,24 +1,26 @@
-import { Fragment, useEffect, useState } from "react"
+import {  useEffect, useState } from "react"
 import Table from "../Ui/Table"
 import UserSqlService from "../../Services/UserSqlService"
-import UserOracleService from "../../Services/UserOracleService"
+
 
 
 const ViewTables = () => {
-    const [oracleData, setOracleData] = useState({});
-    const [sqlData, setSqlData] = useState({});
+    //const [oracleData, setOracleData] = useState({});
+    const [sqlData, setSqlData] = useState([]);
 
     useEffect(() => {
-        //sql
-        UserSqlService.getAllUsers()
-            .then((res) => res.json())
-            .then((sqlJson) => setSqlData(sqlJson))
+        async function fetchData() {
+            var users = await UserSqlService.getAllUsers();
 
+            console.log(users);
+            setSqlData(users?.data)
+        }
 
-        //oracle
-        UserOracleService.getAllUsers()
-            .then((res) => res.json())
-            .then((oracleJson) => setOracleData(oracleJson))
+        setTimeout(() => {
+            fetchData();
+        }, 2000);
+       
+
 
 
     }, [])
@@ -44,6 +46,10 @@ const ViewTables = () => {
         },
     ];
 
+    const keyFn = (data) => {
+        return data.id;
+    };
+
 
 
     return (
@@ -51,18 +57,18 @@ const ViewTables = () => {
         <div className="container">
 
             {sqlData && (
-                <Fragment className="items">
+                <div className="items">
                     <h1>Oracle Table</h1>
-                    <Table data={sqlData} config={config} keyFn={sqlData.id} />
-                </Fragment>)}
+                    <Table data={sqlData} config={config} keyFn={keyFn} />
+                </div>)}
 
 
-            {oracleData && (
+            {/* {oracleData && (
                 <Fragment className="items">
                     <h1>Oracle Table</h1>
                     <Table data={oracleData} config={config} keyFn={oracleData.id} />
                 </Fragment>
-            )}
+            )} */}
         </div>
     )
 }

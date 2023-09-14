@@ -5,10 +5,10 @@ function Table({ data, config, keyFn }) {
     return <th key={column.label}>{column.label}</th>;
   });
 
-  const renderedRows = data.map((rowData) => {
+  const renderedRows = data.map((rowData,index) => {
     const renderedCells = config.map((column) => {
       return (
-        <td className="p-2" key={column.label}>
+        <td className="p-2" key={keyFn(index)+"tv"}>
           {column.render(rowData)}
         </td>
       );
