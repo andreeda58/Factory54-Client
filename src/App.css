@@ -26,3 +26,32 @@ select{
   width:230px ;
   border: salmon;
 }
+
+th,
+td {
+   
+    padding: 20px;
+    border:  1px solid #ddd;
+}
+
+
+table {
+
+  border: 1px solid;
+  width: 500px;
+  height: auto;
+  border-collapse: collapse;
+
+}
+
+h1 {
+  display: flex;
+  justify-content: center;
+}
+
+form >label{
+  color: red;
+}
+
+.label1{
+}

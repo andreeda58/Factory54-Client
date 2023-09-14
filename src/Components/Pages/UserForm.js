@@ -3,15 +3,17 @@ import SelectBox from "../Ui/SelectBox"
 import { useFormik } from "formik";
 import userValidationSchema from '../../Validations/UserValidation';
 import { useState } from 'react';
-import UserSqlService from "../../Services/UserSqlService"
 import UserMongoService from "../../Services/UserMongoService"
+import UserSqlService from "../../Services/UserSqlService"
 import { useNavigate } from "react-router";
+
 
 
 const UserForm = () => {
 
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const id = Math.floor(Math.random() * 999999);
 
     const formik = useFormik({
         initialValues: {
@@ -25,20 +27,21 @@ const UserForm = () => {
         onSubmit: (values, { resetForm }) => {
             console.log(values);
 
-       //     values.db==="oracle"?UserOracleService.addUser(values.name,values.lastName,values.job,values.age)
-        //    :UserSqlService.addUser(values.name,values.lastName,values.job,values.age)
-
             setLoading(true);
             setTimeout(() => {
                 setLoading(false);
                 resetForm();
             }, 1000 * 2);
 
+            if (values.db === "MongoDb") {
+                UserMongoService.addUser({ id: id, name: values.name, lastName: values.lastName, age: values.age, job: values.job })
+            }
+            else {
+                UserSqlService.addUser({ id: id, name: values.name, lastName: values.lastName, age: values.age, job: values.job })
+            }
             navigate("/successPage");
         },
     });
-
-
 
     return (
         <div className='container'>
@@ -51,49 +54,46 @@ const UserForm = () => {
                         label="Name"
                         name='name'
                         className='space'
-                        helperText={formik.errors.name ? formik.errors.name : ""}
-
                     />
                 </div>
+                {formik.errors.name && (<label>{formik.errors.name ?formik.errors.name : ""}</label>)}
                 <div>
                     <TextField
                         onChange={formik.handleChange}
                         id="outlined-required"
                         label="Last Name"
                         name='lastName'
-                        helperText={formik.errors.lastName ? formik.errors.lastName : ""}
-
                     />
                 </div>
+                {formik.errors.lastName && (<label>{formik.errors.lastName ?formik.errors.lastName : ""}</label>)}
                 <div>
                     <TextField
                         onChange={formik.handleChange}
                         id="outlined-required"
                         type='number'
                         label="Age"
-                        name='age'
-                        helperText={formik.errors.age ? formik.errors.age : ""} />
+                        name='age'/>
                 </div>
+                {formik.errors.age && (<label>{formik.errors.age ?formik.errors.age : ""}</label>)}
                 <div>
                     <TextField
                         onChange={formik.handleChange}
                         id="outlined-required"
                         label="Job"
-                        name='job'
-                        helperText={formik.errors.job ? formik.errors.job : ""} />
+                        name='job'/>
                 </div>
+                {formik.errors.job && (<label>{formik.errors.job ?formik.errors.job : ""}</label>)}
                 <div>
 
                     <SelectBox
                         onChange={formik.handleChange}
-                        label="Job"
                         className="form-select form-select-lg mb-3"
-                        values={["Select DB", "oracle", "sql"]}
+                        values={["Select a Db", "MongoDb"]}
                         name="db"
                     />
-                    {formik.errors.job && (<label>Please select a data base</label>)}
                 </div>
-
+                {formik.errors.db && (<label className='label1'>Please select a data base</label>)}
+                <br />
                 <button className='btn btn-info space'
                     disabled={loading}
                     type='submit'

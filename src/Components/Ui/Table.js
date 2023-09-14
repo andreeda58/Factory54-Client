@@ -8,23 +8,23 @@ function Table({ data, config, keyFn }) {
   const renderedRows = data.map((rowData,index) => {
     const renderedCells = config.map((column) => {
       return (
-        <td className="p-2" key={keyFn(index)+"tv"}>
+        <td  key={keyFn(index)+"tv"}>
           {column.render(rowData)}
         </td>
       );
     });
 
     return (
-      <tr className="border-b" key={keyFn(rowData)}>
+      <tr  key={keyFn(rowData)}>
         {renderedCells}
       </tr>
     );
   });
 
   return (
-    <table className="table-auto border-spacing-2">
+    <table >
       <thead>
-        <tr className="border-b-2">{renderedHeaders}</tr>
+        <tr >{renderedHeaders}</tr>
       </thead>
       <tbody>{renderedRows}</tbody>
     </table>

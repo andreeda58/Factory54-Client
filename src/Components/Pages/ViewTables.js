@@ -1,8 +1,6 @@
 import {  useEffect, useState } from "react"
 import Table from "../Ui/Table"
-import UserSqlService from "../../Services/UserSqlService"
-
-
+import UserMongoService from "../../Services/UserMongoService"
 
 const ViewTables = () => {
     //const [oracleData, setOracleData] = useState({});
@@ -10,7 +8,7 @@ const ViewTables = () => {
 
     useEffect(() => {
         async function fetchData() {
-            var users = await UserSqlService.getAllUsers();
+            var users = await  UserMongoService.getAllUsers();
 
             console.log(users);
             setSqlData(users?.data)
@@ -18,10 +16,7 @@ const ViewTables = () => {
 
         setTimeout(() => {
             fetchData();
-        }, 2000);
-       
-
-
+        }, 100);
 
     }, [])
 
@@ -61,7 +56,6 @@ const ViewTables = () => {
                     <h1>Oracle Table</h1>
                     <Table data={sqlData} config={config} keyFn={keyFn} />
                 </div>)}
-
 
             {/* {oracleData && (
                 <Fragment className="items">
