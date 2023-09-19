@@ -13,6 +13,7 @@ const UserForm = () => {
 
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [error,setError]=useState("");
     const id = Math.floor(Math.random() * 999999);
 
     const formik = useFormik({
@@ -24,24 +25,34 @@ const UserForm = () => {
             db: "",
         },
         validationSchema: userValidationSchema,
-        onSubmit: (values, { resetForm }) => {
-            console.log(values);
-
-            setLoading(true);
+        onSubmit: async(values, { resetForm }) => {
             setTimeout(() => {
                 setLoading(false);
                 resetForm();
             }, 1000 * 2);
 
-            if (values.db === "MongoDb") {
-                UserMongoService.addUser({ id: id, name: values.name, lastName: values.lastName, age: values.age, job: values.job })
+            try {
+
+                if (values.db === "MongoDb") {
+                   await UserMongoService.addUser({ id: id, name: values.name, lastName: values.lastName, age: values.age, job: values.job })
+                }
+                else {
+                   await UserSqlService.addUser({ id: id, name: values.name, lastName: values.lastName, age: values.age, job: values.job })
+                }
+                navigate("/successPage");
             }
-            else {
-                UserSqlService.addUser({ id: id, name: values.name, lastName: values.lastName, age: values.age, job: values.job })
+            catch(error){
+                setError(error.message)
+                return
             }
-            navigate("/successPage");
+           
         },
     });
+
+    if(error)return(<>
+        <h1>{error}</h1>
+        <h1>Please try again</h1>
+    </>)
 
     return (
         <div className='container'>

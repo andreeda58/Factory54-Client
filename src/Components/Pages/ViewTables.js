@@ -11,15 +11,10 @@ const ViewTables = () => {
             try {
                 const {data} = await UserMongoService.getAllUsers();
                 setMongoData(data);
-
-                return { 
-                    ok: true, 
-                }
+                return { ok: true,}
             }
             catch (error) {
-
                 const {message}=error;
-               
                 return {
                     ok: false,
                     err: message
