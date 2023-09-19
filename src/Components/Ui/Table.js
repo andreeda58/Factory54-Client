@@ -1,3 +1,4 @@
+
 function Table({ data, config, keyFn }) {
 
   
@@ -8,7 +9,7 @@ function Table({ data, config, keyFn }) {
   const renderedRows = data.map((rowData,index) => {
     const renderedCells = config.map((column) => {
       return (
-        <td  key={keyFn(index)+"tv"}>
+        <td  key={keyFn(column)}>
           {column.render(rowData)}
         </td>
       );

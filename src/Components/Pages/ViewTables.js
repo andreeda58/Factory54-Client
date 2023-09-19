@@ -1,22 +1,37 @@
-import {  useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import Table from "../Ui/Table"
 import UserMongoService from "../../Services/UserMongoService"
 
 const ViewTables = () => {
     //const [oracleData, setOracleData] = useState({});
-    const [sqlData, setSqlData] = useState([]);
+    const [mongoData, setMongoData] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
-            var users = await  UserMongoService.getAllUsers();
+            try {
+                const {data} = await UserMongoService.getAllUsers();
 
-            console.log(users);
-            setSqlData(users?.data)
+                return { 
+                    ok: true, 
+                    data: data
+                }
+            }
+            catch (error) {
+
+                const {message}=error;
+               
+                return {
+                    ok: false,
+                    err: message
+                }
+            }
+
         }
+        const {ok, data} = fetchData();
 
-        setTimeout(() => {
-            fetchData();
-        }, 100);
+        if(!ok) return
+        else setMongoData(data);
+
 
     }, [])
 
@@ -47,14 +62,15 @@ const ViewTables = () => {
 
 
 
+
     return (
 
         <div className="container">
 
-            {sqlData && (
+            {mongoData && (
                 <div className="items">
-                    <h1>Oracle Table</h1>
-                    <Table data={sqlData} config={config} keyFn={keyFn} />
+                    <h1>Mongo Table</h1>
+                    <Table data={mongoData} config={config} keyFn={keyFn} />
                 </div>)}
 
             {/* {oracleData && (
