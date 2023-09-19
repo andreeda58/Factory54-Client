@@ -10,10 +10,10 @@ const ViewTables = () => {
         async function fetchData() {
             try {
                 const {data} = await UserMongoService.getAllUsers();
+                setMongoData(data);
 
                 return { 
                     ok: true, 
-                    data: data
                 }
             }
             catch (error) {
@@ -27,11 +27,8 @@ const ViewTables = () => {
             }
 
         }
-        const {ok, data} = fetchData();
-
+        const {ok} = fetchData();
         if(!ok) return
-        else setMongoData(data);
-
 
     }, [])
 
@@ -57,7 +54,7 @@ const ViewTables = () => {
     ];
 
     const keyFn = (data) => {
-        return data.id;
+        return `${data.label}`;
     };
 
 
@@ -84,5 +81,3 @@ const ViewTables = () => {
 }
 
 export default ViewTables
-
-// data, config, keyFn 

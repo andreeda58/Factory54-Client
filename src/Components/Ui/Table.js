@@ -16,7 +16,7 @@ function Table({ data, config, keyFn }) {
     });
 
     return (
-      <tr  key={keyFn(rowData)}>
+      <tr  key={index}>
         {renderedCells}
       </tr>
     );
